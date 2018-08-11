@@ -3,8 +3,8 @@
 export DEBIAN_FRONTEND=noninteractive
 
 # Install required packages
-sudo debconf-set-selections <<< 'mariadb-server-10.0 mysql-server/root_password password pass'
-sudo debconf-set-selections <<< 'mariadb-server-10.0 mysql-server/root_password_again password pass'
+debconf-set-selections <<< 'mariadb-server-10.0 mysql-server/root_password password pass'
+debconf-set-selections <<< 'mariadb-server-10.0 mysql-server/root_password_again password pass'
 apt update
 apt install -y vim curl git unzip mariadb-client mariadb-server nginx-full php7.0 php7.0-cli php7.0-mbstring php7.0-mcrypt php7.0-mysql php7.0-fpm php7.0-xml php7.0-zip ssl-cert
 
@@ -12,6 +12,8 @@ apt install -y vim curl git unzip mariadb-client mariadb-server nginx-full php7.
 usermod -s /bin/bash www-data
 
 # Set up database
+mysql -e 'grant all on *.* to user@localhost identified by "pass"'
+mysqladmin flush-privileges
 mysqladmin create step1
 mysqladmin create step2
 mysqladmin create step3
