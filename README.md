@@ -27,6 +27,6 @@ These steps we'll follow in the workshop are:
 
 ## URLs and document roots for each step
 
-Each of these steps is a starting milestone in this repo, and available at `http://localhost:xxxx/` where `xxxx` is the step number plus 3000. For example, if starting from step 3, participants can head to `https://localhost:3003/`.
+Each of these steps is a starting milestone in this repo, and available at `https://localhost:xxxx/` where `xxxx` is the step number plus 3000. For example, if starting from step 3, participants can head to `https://localhost:3003/`.
 
 Similarly, each step has it's own known-good document root, in the `docroots/stepx` folder, where `x` is the step number.
