@@ -149,6 +149,55 @@ You can hash a string like this:
     
     }
 
-## Step 2
+## Step 2 - Contact Lists
 
+Starting logged in, and looking at the dashboard, we want to create a view of contacts on the left, and a placeholder for messages on the right. For simplicity, the contact list will show a list of all users in the system. Note that this could represent a privacy leak in a production system.
 
+Edit the `resources/views/home.blade.php` view, and `app/Http/Controllers/HomeController.php` controller accordingly.
+
+### Sample Solution
+
+#### View
+
+    @extends('layouts.app')
+    
+    @section('content')
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 contacts">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Contacts</div>
+                    <div class="panel-body">
+                    @foreach ($users as $user)
+                        <a href="">{{ $user->email }}</a>
+                    @endforeach
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8 messages">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Message</div>
+                    <div class="panel-body">
+                        Select a user on the left to start chatting with them.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endsection
+    
+### Controller
+
+Add this to the lsit of classes to use:
+
+    use App\User;
+
+And replace the `index` method with:
+
+    public function index()
+    {
+	      $users = User::all();
+        return view('home', ['users' => $users]);
+    }
+
+If you have time, why not try to make sure users are in alphabetical order, and exclude the logged in user from the list.
