@@ -18,7 +18,7 @@ These steps we'll follow in the workshop are:
 
 0. Welcome and getting started (5 minutes),
 1. Take a base Laravel install, and ensure passwords are hashed before sending to the server (10 minutes),
-2. Create a contact list model for users, with associated views,
+2. Create a contact list view for users,
 3. Create a message model, view and controller to allow users to see messages, and create new messages for someone in their contact list,
 4. Add [OpenPGP.js](https://github.com/openpgpjs/openpgpjs/) and generate a new keypair,
 5. Create an endpoint to allow a user to get a contact's public key,
