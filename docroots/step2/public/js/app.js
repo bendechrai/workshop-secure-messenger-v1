@@ -66776,6 +66776,7 @@ var AuthHash = function () {
         _classCallCheck(this, AuthHash);
 
         this.jQuery = jQuery;
+        this.bcrypt = __webpack_require__(125);
     }
 
     _createClass(AuthHash, [{
@@ -66787,36 +66788,23 @@ var AuthHash = function () {
             // On register submit, hash passwords
             this.jQuery("form#register").submit(function (e) {
 
-                // Grab passwords, save to session storage, then blank the input fields
+                // Grab passwords
                 var password = self.jQuery("#password", e.target).val();
                 var passwordConfirm = self.jQuery("#password-confirm", e.target).val();
-                sessionStorage.setItem("password", password);
-                self.jQuery("#password", e.target).val("");
-                self.jQuery("#password-confirm", e.target).val("");
 
-                // Hash the password, and put it in to the password fields
-                var bcrypt = __webpack_require__(125);
-                self.jQuery("#password", e.target).val(bcrypt.hashSync(password, self.getSalt()));
-                self.jQuery("#password-confirm", e.target).val(bcrypt.hashSync(passwordConfirm, self.getSalt()));
+                // Hash the passwords, and put them in to the password fields
+                self.jQuery("#password", e.target).val(self.bcrypt.hashSync(password, self.getSalt()));
+                self.jQuery("#password-confirm", e.target).val(self.bcrypt.hashSync(passwordConfirm, self.getSalt()));
             });
 
             // On login submit, hash password
             this.jQuery("form#login").submit(function (e) {
 
-                // Grab password, save to session storage, then blank the input field
+                // Grab password
                 var password = self.jQuery("#password", e.target).val();
-                sessionStorage.setItem("password", password);
-                self.jQuery("#password", e.target).val("");
 
                 // Hash the password, and put it in to the password field
-                var bcrypt = __webpack_require__(125);
-                var hashPassword = bcrypt.hashSync(password, self.getSalt());
-                self.jQuery("#password", e.target).val(hashPassword);
-            });
-
-            // On logout, forget password
-            this.jQuery("#logout-form").submit(function (e) {
-                sessionStorage.removeItem("password");
+                self.jQuery("#password", e.target).val(self.bcrypt.hashSync(password, self.getSalt()));
             });
         }
     }, {
