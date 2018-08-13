@@ -42,7 +42,7 @@ Whenever you want to work on the workshop files, you'll have to change user to t
 
 The code is in `/vagrant/docroots/stepX`, where X is the step number.
 
-## Step 1
+## Step 1 - Double Hashing
 
 By now, you should be able to see a base Laravel installation at `https://localhost:3001/`. Remember that we're using TLS encryption using a self-signed certificate, so if oyu see a certificate error, you'll need to manually proceed.
 
@@ -61,7 +61,7 @@ If you refresh the homepage now, you'll see the Login and Register links in the 
 
 ### Hash passwords in the browser
 
-This will require some custom code. We're going to use JavaScript to hook in to the login and registration form, and hash passwords before the form is actually submitted.
+This will require some custom code. We're going to use JavaSolution to hook in to the login and registration form, and hash passwords before the form is actually submitted.
 
 The JavaScript in a Laravel application is kept in `resources/assets/js/app.js`. You can edit this file on your main machine if that's easier, using an editor of your choice.
 
@@ -88,7 +88,7 @@ You can hash a string like this:
 
     bcrypt.hashSync(string, bcrypt_salt);
 
-### Sample Script
+### Sample Solution
 
     export default class AuthHash {
     
