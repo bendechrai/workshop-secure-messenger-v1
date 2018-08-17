@@ -168,9 +168,11 @@ Edit the `resources/views/home.blade.php` view, and `app/Http/Controllers/HomeCo
                 <div class="panel panel-default">
                     <div class="panel-heading">Contacts</div>
                     <div class="panel-body">
-                    @foreach ($users as $user)
-                        <a href="">{{ $user->email }}</a>
-                    @endforeach
+												<ul>
+														@foreach ($users as $user)
+																<li><a href="">{{ $user->name }}</a></li>
+														@endforeach
+												</ul>
                     </div>
                 </div>
             </div>

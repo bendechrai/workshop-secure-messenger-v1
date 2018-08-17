@@ -8,7 +8,7 @@
                 <div class="panel-heading">Contacts</div>
                 <div class="panel-body">
                 @foreach ($users as $user)
-                    <a href="">{{ $user->email }}</a>
+                    <a href="">{{ $user->name }}</a>
                 @endforeach
                 </div>
             </div>
