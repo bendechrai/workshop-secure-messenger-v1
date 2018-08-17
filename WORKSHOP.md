@@ -198,7 +198,7 @@ And replace the `index` method with:
 
     public function index()
     {
-	      $users = User::all();
+          $users = User::all();
         return view('home', ['users' => $users]);
     }
 
