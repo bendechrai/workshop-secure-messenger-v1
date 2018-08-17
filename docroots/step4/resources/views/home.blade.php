@@ -9,7 +9,7 @@
                 <div class="panel-body">
                     <ul>
                         @foreach ($users as $user)
-                            <li><a href="{{ route('user', ['email'=>$user->id]) }}">{{ $user->name }}</a></li>
+                            <li><a href="{{ route('user', ['id'=>$user->id]) }}">{{ $user->name }}</a></li>
                         @endforeach
                     </ul>
                 </div>
