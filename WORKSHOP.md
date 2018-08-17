@@ -68,7 +68,7 @@ The JavaScript in a Laravel application is kept in `resources/assets/js/app.js`.
 Add something like this to that file:
 
     import AuthHash from './AuthHash';
-		// make sure that the page is completely loaded before we try looking for the form elements
+        // make sure that the page is completely loaded before we try looking for the form elements
     $(document).ready(function () {
         var ah = new AuthHash($);
         ah.authHook();
@@ -168,11 +168,11 @@ Edit the `resources/views/home.blade.php` view, and `app/Http/Controllers/HomeCo
                 <div class="panel panel-default">
                     <div class="panel-heading">Contacts</div>
                     <div class="panel-body">
-												<ul>
-														@foreach ($users as $user)
-																<li><a href="">{{ $user->name }}</a></li>
-														@endforeach
-												</ul>
+                                                <ul>
+                                                        @foreach ($users as $_user)
+                                                                <li><a href="">{{ $_user->name }}</a></li>
+                                                        @endforeach
+                                                </ul>
                     </div>
                 </div>
             </div>
@@ -282,8 +282,8 @@ And the view, which is a new file in `resources/views/user.blade.php`:
                     <div class="panel-heading">Contacts</div>
                     <div class="panel-body">
                         <ul>
-                            @foreach ($users as $user)
-                                <li><a href="{{ route('user', ['email'=>$user->id]) }}">{{ $user->name }}</a></li>
+                            @foreach ($users as $_user)
+                                <li><a href="{{ route('user', ['id'=>$_user->id]) }}">{{ $_user->name }}</a></li>
                             @endforeach
                         </ul>
                     </div>
@@ -293,8 +293,8 @@ And the view, which is a new file in `resources/views/user.blade.php`:
                 <div class="panel panel-default">
                     <div class="panel-heading">Message</div>
                     <div class="panel-body">
-                        @foreach($messages as $message)
-                            <p><strong>{{ $message->sender_id }}</strong> {{ $message->message }}</p>
+                        @foreach($messages as $_message)
+                            <p><strong>{{ $_message->sender_id }}</strong> {{ $_message->message }}</p>
                         @endforeach
                     </div>
                 </div>
