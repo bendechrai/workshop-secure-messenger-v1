@@ -312,6 +312,50 @@ Finally, add a route to `routes/web.php` to handle the new URL:
 
 ## Step 4 - Allow Sending of Messages
 
+Let's add a form to the user view. After the `panel-body` that contains the list of messages, add a `panel-footer`:
+
+    <div class="panel-footer">
+        <form action="{{ route('user.message', ['id'=>$user->id]) }}" method="post">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Type new message to {{ $user->name }}...">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="submit">Send!</button>
+                </span>
+            </div>
+        </form>
+    </div>
+
+A route:
+
+    Route::post('/{user}/message', 'UserController@sendMessage')->name('user.message');
+
+And a method to the UserController:
+
+    public function sendMessage(Request $request, User $user)
+    {
+        $message = new Message();
+        $message->sender_id = \Auth::user()->id;
+        $message->recipient_id = $user->id;
+        $message->message = $request->input('message');
+        $message->save();
+        return redirect()->route('user', ['id'=>$user->id]);
+    }
+
+#### Nicer names?
+
+If you have time, you might have noticed that messages are prefixed with the user's ID. Let's show the name instead. To do this, we need to tell Laravel's Message model ow it relates to Users. Edit `app/Message.php`, and add the following method:
+
+    public function sender()
+    {
+        return $this->hasOne('App\User', 'id', 'sender_id');
+    }
+
+And then simply update the view to show:
+
+    {{ $_message->sender->name }}
+
+in the relevant spot.
+
 ## Step 5 - Encryption Keys
 ## Step 6 - Retrieving Others' Public Keys
 ## Step 7 - Encrypting Messages
