@@ -188,7 +188,7 @@ Edit the `resources/views/home.blade.php` view, and `app/Http/Controllers/HomeCo
     
 ### Controller
 
-Add this to the lsit of classes to use:
+Add this to the list of classes to use:
 
     use App\User;
 
