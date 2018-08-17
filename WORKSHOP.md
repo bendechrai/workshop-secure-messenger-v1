@@ -265,9 +265,10 @@ Add the `show()` method:
     {
         $users = User::all();
         $members = [ \Auth::user()->id, $user->id ];
-        $messages = Message::where('sender_id', 'in', $members)
-                           ->where('recipient_id', 'in', $members);
-        return view('user', ['users' => $users, 'messages' => $messages]);
+        $messages = Message::whereIn('sender_id', $members)
+            ->whereIn('recipient_id', $members)
+            ->get();
+        return view('user', ['user' => $user, 'users' => $users, 'messages' => $messages]);
     }
 
 And the view, which is a new file in `resources/views/user.blade.php`:
