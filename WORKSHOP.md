@@ -203,3 +203,111 @@ And replace the `index` method with:
     }
 
 If you have time, why not try to make sure users are in alphabetical order, and exclude the logged in user from the list.
+
+## Step 3 - Messages
+
+Let's have a unique URL for each contact. This will make it easier to switch message panes, and bookmark certain chats.
+
+In this step, we need to:
+
+    * Create a message model, controller, and migration
+    * Create a route for each user
+    * Create a controller and view to show messages between the logged in user and selected user
+    * Update the contact list to link to the right URL
+
+Luckily, Laravel lets us do a lot of this quite easily. Either go ahead and give it a try, or follow these steps.
+
+### Create the Model
+
+Use Artisan to create the model:
+
+    php artisan make:model Message -cmr
+
+By adding `-cmr` to the previous command, we've aldo just created a controller, migration, and configured the controller to provide basic CRUD methods!
+
+Let's edit the migration that was just created in `database/migrations`, and add the following attributes:
+
+    * sender_id
+    * recipient_id
+    * message
+
+#### Hint
+
+Adding the following after `$table->increments('id');` will create these attributes, and link them to the user table.
+
+    $table->integer('sender_id')->unsigned();
+    $table->foreign('sender_id')->references('id')->on('users');
+    $table->integer('recipient_id')->unsigned();
+    $table->foreign('recipient_id')->references('id')->on('users');
+    $table->longText('message');
+
+For good practice, don't forget to drop the foreign keys in the `down()` method, so that rollbacks and migration refreshes don't experience issues. Add this before the `dropIfExists()` call:
+
+    Schema::table('messages', function($table) {
+        $table->dropForeign('messages_sender_id_foreign');
+        $table->dropForeign('messages_recipient_id_foreign');
+    });
+
+### Create a User View and Controller
+
+We have a model and controller for Messages, but not for the user.
+
+    php artisan make:controller UserController
+
+Now edit the `app/Http/Controllers/UserController.php` file, and add the followung `use`:
+
+    use App\User;
+    use App\Message;
+
+Add the `show()` method:
+
+    public function show(User $user)
+    {
+        $users = User::all();
+        $members = [ \Auth::user()->id, $user->id ];
+        $messages = Message::where('sender_id', 'in', $members)
+                           ->where('recipient_id', 'in', $members);
+        return view('user', ['users' => $users, 'messages' => $messages]);
+    }
+
+And the view, which is a new file in `resources/views/user.blade.php`:
+
+    @extends('layouts.app')
+    
+    @section('content')
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 contacts">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Contacts</div>
+                    <div class="panel-body">
+                        <ul>
+                            @foreach ($users as $user)
+                                <li><a href="{{ route('user', ['email'=>$user->id]) }}">{{ $user->name }}</a></li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8 messages">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Message</div>
+                    <div class="panel-body">
+                        @foreach($messages as $message)
+                            <p><strong>{{ $message->sender_id }}</strong> {{ $message->message }}</p>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endsection
+
+Finally, update the home view to link to the user views (`resources/views/home.blade.php`). Replace the link href around the user's name with the same link as in the user view.
+
+## Step 4 - Allow Sending of Messages
+
+## Step 5 - Encryption Keys
+## Step 6 - Retrieving Others' Public Keys
+## Step 7 - Encrypting Messages
+## Step 8 - Decrypting Messages
