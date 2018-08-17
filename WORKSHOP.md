@@ -221,9 +221,9 @@ Luckily, Laravel lets us do a lot of this quite easily. Either go ahead and give
 
 Use Artisan to create the model:
 
-    php artisan make:model Message -cmr
+    php artisan make:model Message -m
 
-By adding `-cmr` to the previous command, we've aldo just created a controller, migration, and configured the controller to provide basic CRUD methods!
+By adding `-m` to the previous command, we've also just created a migration file.
 
 Let's edit the migration that was just created in `database/migrations`, and add the following attributes:
 
