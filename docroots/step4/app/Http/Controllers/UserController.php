@@ -12,8 +12,9 @@ class UserController extends Controller
     {
         $users = User::all();
         $members = [ \Auth::user()->id, $user->id ];
-        $messages = Message::where('sender_id', 'in', $members)
-                           ->where('recipient_id', 'in', $members);
+        $messages = Message::whereIn('sender_id', $members)
+            ->whereIn('recipient_id', $members)
+            ->get();
         return view('user', ['users' => $users, 'messages' => $messages]);
     }
 
