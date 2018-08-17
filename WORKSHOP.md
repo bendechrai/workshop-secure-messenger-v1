@@ -304,7 +304,11 @@ And the view, which is a new file in `resources/views/user.blade.php`:
     </div>
     @endsection
 
-Finally, update the home view to link to the user views (`resources/views/home.blade.php`). Replace the link href around the user's name with the same link as in the user view.
+Don't forget to update the home view to link to the user views too (`resources/views/home.blade.php`). Replace the link href around the user's name with the same link as in the user view.
+
+Finally, add a route to `routes/web.php` to handle the new URL:
+
+    Route::get('/{user}', 'UserController@show')->name('user');
 
 ## Step 4 - Allow Sending of Messages
 
