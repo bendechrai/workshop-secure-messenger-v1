@@ -365,6 +365,210 @@ And then simply update the view to show:
 in the relevant spot.
 
 ## Step 5 - Encryption Keys
+
+So, we've now got a working messaging app, let's encrypt the messages. To do this, we'll need to create a public and private key per user.
+
+Let's start by grabbing the OpenPGP.js library:
+
+    npm install openpgp
+
+### First time setup for a user
+
+The first time a user logs in, or creates an account, we now need to create a keypair, and store them securely.
+
+To start with, we need a passphrase for the keypair. You'll remeber that we hash the passwords before they're sent to the server. The reason for this is so we can use the same password for the keypair, as they've never left the browser session.
+
+So to complete this step, we need to detect if a user is logged in, and if they are, get the keypair. If there's no keypair, generate themm and store them on the server.
+
+**But wait!** We're storing the provate key on the server? Yes, we are, but it is protected with the passphrase. Not perfect, but good enough for the purposes of this workshop.
+
+#### Update the Database
+
+We need to store the public and private keys. Let's add them to the database. First, create the migration file:
+
+    php artisan make:migration UpdateUserAddKeyPair
+
+Then edit the newly crated migration file in `database/migrations` and add this to the `up` method:
+
+    Schema::table('users', function (Blueprint $table) {
+        $table->text('private_key')->nullable();
+        $table->text('public_key')->nullable();
+    });
+
+And apply the migration:
+
+   php artisan migrate
+
+#### Is someone logged in?
+
+We can tell this by requesting the user data from the API. By default, Laravel provides a `/api/user` endpoint that requires token authentication. Let's allow a logged in user to use their existing cookie-based session to use the API too.
+
+Edit `app/Http/Kernel.php`, and copying the three cookie/session based classed from the `$middlewareGroups->web` array to the `$middlewareGroups->api` array.
+
+Secondly, update `routes/api.php` to use middleware `auth` instead of `auth:api`.
+
+You can now head to `https://localhost:XXXX/api/user` and see a JSON representation of the logged in user. We'll use that in the Javascript to determine if someone's logged in.
+
+#### Keypairs
+
+You'll notice there's no keypair data though. We'll need to put together a quick API controller, and while we're at it, we'll include an update method too.
+
+    php artisan make:controller "Api/UserController"
+
+Now edit `app/Http/Controllers/Api/UserController.php`, and add these two methods:
+
+    public function show(\App\User $user)
+    {
+        $response = new \stdClass();
+        $response->id = $user->id;
+        $response->public_key = $user->public_key;
+        if($user->id === \Auth::user()->id) {
+            $response->private_key = $user->private_key;
+        }
+        return response()->json($response);
+    }
+
+    public function update(Request $request, \App\User $user)
+    {
+        if($user->id === \Auth::user()->id) {
+            $data = $request->all(['private_key', 'public_key']);
+            if (isset($data['private_key'])) {
+                $user->private_key = $data['private_key'];
+            }
+            if (isset($data['public_key'])) {
+                $user->public_key = $data['public_key'];
+            }
+            $user->save();
+            \Auth::setUser($user);
+        }
+        $this->show($user);
+    }
+
+And then add two routes to `routes/api.php`:
+
+    Route::middleware('auth')->get('/user/{user}/keys', 'Api\UserController@show');
+    Route::middleware('auth')->post('/user/{user}/keys', 'Api\UserController@update');
+
+Now we can get a user's public key with a call to `/api/user/<userid>/keys`, and if the request is for the current user, we get the private key too!
+
+#### Passphrase
+
+We've mentioned already, that we'll use the user's plain password for the private key too. To do this, we'll need to remember the user's password in the browser.
+
+**Security Warning** For simplicity, we're going to save the password in to Local Storage. There are issues with this, in that any javascript running in your app, or any plugins in your browser, also have access to this. There are other options, but it's a big topic that could be its own workshop.
+
+Let's update the AuthHash class to save the password, and allow retrieval. After the "Grab password" sections of both the register and login hooks, add the following:
+
+    // Remember password
+    self.setPassword(password);
+
+And then add the following two methods to the class:
+
+    setPassword(password) {
+        localStorage.setItem('AuthHash_Password', password);
+    }
+
+    getPassword(password) {
+        return localStorage.getItem('AuthHash_Password');
+    }
+
+#### Make sure we have a keypair
+
+We're ready to start adding to the main javsacript application not. Add the following to the `resources/assets/js/app.js`:
+
+    // Try to get user
+    import Encrypt from './Encrypt';
+    $.ajax({
+        url: "/api/user",
+        type: "GET"
+    }).done(function (user) {
+
+        // User is logged in - apply encryption to DOM
+        $(document).ready(function () {
+            var encrypt = new Encrypt($);
+            encrypt.getKeys({
+                userId: user.id,
+                passphrase: ah.getPassword()
+            }).done(function(keys){
+                console.log(keys);
+            });
+        });
+
+    });
+
+This will detect if a user is logged in, and if so, get the keys for that user. The generation is all abstracted away in to the Encrypt class.
+
+So let's create that Encrypt class in `resources/assets/js/Encrypt.js`. This one's long and a bit complicated, so just copy and paste this block, or copy the file from `step6/resources/assets/js/Encrypt.js`.
+
+    export default class Encrypt {
+    
+        constructor(jQuery) {
+            this.jQuery = jQuery;
+            this.openpgp =require("openpgp");
+        }
+    
+        getKeys(params) {
+            var deferred = jQuery.Deferred();
+            self = this;
+    
+            // Get keys
+            $.ajax({
+                url: "/api/user/"+params.userId+"/keys",
+                type: "GET"
+            }).done(function (keys) {
+            
+                if(keys.private_key === null || keys.public_key === null) {
+                    self.generateKeys(params.passphrase).done(function (keys) {
+                        self.keys = keys;
+  
+                        // Send to backend
+                        $.ajax({
+                            url: "/api/user/"+params.userId+"/keys",
+                            type: "POST",
+                            data: {
+                                private_key: keys.private_key,
+                                public_key: keys.public_key
+                            },
+                            dataType: "json",
+                        }).done(function () {
+                            deferred.resolve(keys)
+                        });
+            
+                    });
+                } else {
+                    deferred.resolve(self.keys);
+                }
+              
+            });
+    
+            return deferred.promise();
+        }
+    
+        generateKeys(passphrase) {
+            var deferred = jQuery.Deferred();
+    
+            var options = {
+                userIds: [{name: "Anonymous", email: "anon@example.com"}],
+                numBits: 2048,
+                passphrase: passphrase
+            };
+    
+            // Generate Key and resolve this promise
+            var openpgp = require("openpgp");
+            openpgp.generateKey(options).then(function (keys) {
+                deferred.resolve({
+                    private_key: keys.privateKeyArmored,
+                    public_key: keys.publicKeyArmored
+                });
+            });
+        
+            return deferred.promise();
+        }
+    
+    }
+
+So what's going on here? Essentially, the `getKeys()` method will grab the keys from the API, and return them. If the API doesn't have keys yet though, it calls `generateKeys()` with the user's password to create a public/private keypair from scratch. When `generateKeys()` returns the keypair, the `getKeys()` method will send them to the API, and then return them to the main application again.
+
 ## Step 6 - Retrieving Others' Public Keys
 ## Step 7 - Encrypting Messages
 ## Step 8 - Decrypting Messages
