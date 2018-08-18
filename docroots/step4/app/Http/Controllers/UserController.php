@@ -22,7 +22,7 @@ class UserController extends Controller
                     ->where('recipient_id', '=', $me);
             })
             ->get();
-        return view('user', ['users' => $users, 'messages' => $messages]);
+        return view('user', ['user' => $user, 'users' => $users, 'messages' => $messages]);
     }
 
 }
