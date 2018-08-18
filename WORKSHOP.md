@@ -149,6 +149,14 @@ You can hash a string like this:
     
     }
 
+Note that Laravel uses compiled assets. You'll need to run
+
+    npm run dev
+
+after changign any JS files. Alternatilvely, run this once in another tab, and changes to JS files will start an automatic rebuild:
+
+    npm run watch
+
 ## Step 2 - Contact Lists
 
 Starting logged in, and looking at the dashboard, we want to create a view of contacts on the left, and a placeholder for messages on the right. For simplicity, the contact list will show a list of all users in the system. Note that this could represent a privacy leak in a production system.
