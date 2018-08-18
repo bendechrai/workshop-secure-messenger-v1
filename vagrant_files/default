@@ -13,7 +13,6 @@ server {
 	location ~ \.php$ {
 		include snippets/fastcgi-php.conf;
 		fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
-		fastcgi_param DATABASE_NAME "step1";
 	}
 }
 
@@ -32,7 +31,6 @@ server {
 	location ~ \.php$ {
 		include snippets/fastcgi-php.conf;
 		fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
-		fastcgi_param DATABASE_NAME "step2";
 	}
 }
 
@@ -51,7 +49,6 @@ server {
 	location ~ \.php$ {
 		include snippets/fastcgi-php.conf;
 		fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
-		fastcgi_param DATABASE_NAME "step3";
 	}
 }
 
@@ -70,7 +67,6 @@ server {
 	location ~ \.php$ {
 		include snippets/fastcgi-php.conf;
 		fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
-		fastcgi_param DATABASE_NAME "step4";
 	}
 }
 
@@ -89,7 +85,6 @@ server {
 	location ~ \.php$ {
 		include snippets/fastcgi-php.conf;
 		fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
-		fastcgi_param DATABASE_NAME "step5";
 	}
 }
 
@@ -108,7 +103,6 @@ server {
 	location ~ \.php$ {
 		include snippets/fastcgi-php.conf;
 		fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
-		fastcgi_param DATABASE_NAME "step6";
 	}
 }
 
@@ -127,7 +121,6 @@ server {
 	location ~ \.php$ {
 		include snippets/fastcgi-php.conf;
 		fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
-		fastcgi_param DATABASE_NAME "step7";
 	}
 }
 
@@ -146,7 +139,6 @@ server {
 	location ~ \.php$ {
 		include snippets/fastcgi-php.conf;
 		fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
-		fastcgi_param DATABASE_NAME "step8";
 	}
 }
 
