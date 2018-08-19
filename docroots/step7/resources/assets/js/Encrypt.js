@@ -15,7 +15,7 @@ export default class Encrypt {
             type: "GET"
         }).done(function (key) {
 		
-            if(key.private_key === null || key.public_key === null) {
+            if(params.passphrase && (keys.private_key === null || keys.public_key === null)) {
                 self.generateKeys(params.passphrase).done(function (key) {
 					self.key = key;
 

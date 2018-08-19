@@ -524,7 +524,7 @@ So let's create that Encrypt class in `resources/assets/js/Encrypt.js`. This one
                 type: "GET"
             }).done(function (keys) {
             
-                if(keys.private_key === null || keys.public_key === null) {
+                if(params.passphrase && (keys.private_key === null || keys.public_key === null)) {
                     self.generateKeys(params.passphrase).done(function (keys) {
                         self.keys = keys;
   
