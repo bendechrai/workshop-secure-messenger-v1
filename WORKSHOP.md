@@ -413,7 +413,11 @@ You can now head to `https://localhost:XXXX/api/user` and see a JSON representat
 
 #### Keypairs
 
-You'll notice there's no keypair data though. We'll need to put together a quick API controller, and while we're at it, we'll include an update method too.
+You'll notice the keys are returned. Now, we don't want the private key to be shared unless it's being requested for the logged in user. For simplicy, we'll just hide them both and create a new endpoint. You could conditionally hide the private key for some users, and if you know how to, or want to later, go ahead. The rest of the code in this workshop assumed the new endpoints though.
+
+Edit `app/User.php`, and add `private_key` and `public_key` to the `$hidden` array.
+
+Now for the new endpoint:
 
     php artisan make:controller "Api/UserController"
 
