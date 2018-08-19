@@ -8,44 +8,46 @@
 require('./bootstrap');
 
 import AuthHash from './AuthHash';
-var ah = new AuthHash($);
-$(document).ready(function () {
-    ah.authHook();
-});
-
-// Try to get user
 import Encrypt from './Encrypt';
-$.ajax({
-    url: "/api/user",
-    type: "GET"
-}).done(function (user) {
+// make sure that the page is completely loaded before we try looking for the form elements
+$(document).ready(function () {
+    var ah = new AuthHash($);
+    ah.authHook();
 
-    // User is logged in - apply encryption to DOM
-    $(document).ready(function () {
-        var encrypt = new Encrypt($);
-        encrypt.getKeys({
-			userId: user.id,
-			passphrase: ah.getPassword()
-		}).done(function(keys){
+	// Try to get user
+	$.ajax({
+		url: "/api/user",
+		type: "GET"
+	}).done(function (user) {
 
-            // If there's a div with 'encrypt' class
-            if($('div.encrypt')) {
+		// User is logged in - apply encryption to DOM
+		$(document).ready(function () {
+			var encrypt = new Encrypt($);
+			encrypt.getKeys({
+				userId: user.id,
+				passphrase: ah.getPassword()
+			}).done(function(keys){
 
-                // Find the other user in the conversation
-                var otherId = parseInt($($('div.encrypt')[0]).attr('class').match(/\bencrypt-user-([0-9+])\b/)[1]);
-                encrypt.getKeys({ userId: otherId }).done(function(otherKeys) {
+				// If there's a div with 'encrypt' class
+				if($('div.encrypt')) {
 
-                    encrypt.sendHook({
-                        sender_key: keys.public_key,
-                        recipient_key: otherKeys.public_key
-                    });
+					// Find the other user in the conversation
+					var otherId = parseInt($($('div.encrypt')[0]).attr('class').match(/\bencrypt-user-([0-9+])\b/)[1]);
+					encrypt.getKeys({ userId: otherId }).done(function(otherKeys) {
 
-                });
+						encrypt.sendHook({
+							sender_key: keys.public_key,
+							recipient_key: otherKeys.public_key
+						});
 
-            }
- 
-        });
-    });
+					});
+
+				}
+
+			});
+		});
+
+	});
 
 });
 
