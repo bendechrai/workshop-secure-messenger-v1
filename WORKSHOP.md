@@ -310,7 +310,7 @@ And the view, which is a new file in `resources/views/user.blade.php`:
                     <div class="panel-heading">Message</div>
                     <div class="panel-body">
                         @foreach($messages as $_message)
-                            <p><strong>{{ $_message->sender_id }}</strong> {{ $_message->message }}</p>
+                            <p><strong>{{ $_message->sender->name }}</strong> <span class="messageBody">{{ $_message->message }}</span></p>
                         @endforeach
                     </div>
                 </div>

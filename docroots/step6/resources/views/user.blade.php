@@ -20,7 +20,7 @@
                 <div class="panel-heading">Message</div>
                 <div class="panel-body">
                     @foreach($messages as $_message)
-                        <p><strong>{{ $_message->sender->name }}</strong> {{ $_message->message }}</p>
+                        <p><strong>{{ $_message->sender->name }}</strong> <span class="messageBody">{{ $_message->message }}</span></p>
                     @endforeach
                 </div>
                 <div class="panel-footer">
