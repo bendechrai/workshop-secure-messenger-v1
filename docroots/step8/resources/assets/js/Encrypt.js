@@ -63,4 +63,32 @@ export default class Encrypt {
 		return deferred.promise();
 	}
 
+    sendHook(keys) {
+
+        // On message send, encrypt message
+        this.jQuery("div.encrypt form").submit(async function (e) {
+
+            var sender = await self.openpgp.key.readArmored(keys.sender_key);
+            var recipient = await self.openpgp.key.readArmored(keys.recipient_key);
+
+            // Grab message
+            var message = self.jQuery("#message", e.target).val();
+
+            // Encrypt message
+            var options = {
+                message: self.openpgp.message.fromText(message),
+                publicKeys: [
+                    sender.keys[0],
+                    recipient.keys[0],
+                ]
+            };
+            var encrypted = await self.openpgp.encrypt(options);
+
+            // Update message field
+            self.jQuery("#message", e.target).val(encrypted.data);
+
+        });
+
+    }
+
 }

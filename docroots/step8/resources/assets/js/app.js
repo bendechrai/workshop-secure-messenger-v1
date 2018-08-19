@@ -34,7 +34,12 @@ $.ajax({
                 // Find the other user in the conversation
                 var otherId = parseInt($($('div.encrypt')[0]).attr('class').match(/\bencrypt-user-([0-9+])\b/)[1]);
                 encrypt.getKeys({ userId: otherId }).done(function(otherKeys) {
-                    console.log(otherKeys);
+
+                    encrypt.sendHook({
+                        sender_key: keys.public_key,
+                        recipient_key: otherKeys.public_key
+                    });
+
                 });
 
             }

@@ -609,4 +609,46 @@ Put this:
 Now, if you refresh a message view page, instead of the logged in user's public and private key, you'll see the log show the other user's public key only (we shouldn't get hte private key for another person!).
 
 ## Step 7 - Encrypting Messages
+
+Now that we have both keys for any given conversation, let's encrypt messages before they're sent to the sever. In `resources/assets/js/app.js`, replace:
+
+    console.log(otherKeys);
+
+with:
+
+    encrypt.sendHook({
+        sender_key: keys.public_key,
+        recipient_key: otherKeys.public_key
+    });
+
+And add the `sendHook()` method to `resources/assets/js/Encrypt.js`:
+
+    sendHook(keys) {
+
+        // On message send, encrypt message
+        this.jQuery("div.encrypt form").submit(async function (e) {
+
+            var sender = await self.openpgp.key.readArmored(keys.sender_key);
+            var recipient = await self.openpgp.key.readArmored(keys.recipient_key);
+
+            // Grab message
+            var message = self.jQuery("#message", e.target).val();
+
+            // Encrypt message
+            var options = {
+                message: self.openpgp.message.fromText(message),
+                publicKeys: [
+                    sender.keys[0],
+                    recipient.keys[0],
+                ]
+            };
+            var encrypted = await self.openpgp.encrypt(options);
+
+            // Update message field
+            self.jQuery("#message", e.target).val(encrypted.data);
+
+        });
+
+    }
+
 ## Step 8 - Decrypting Messages
