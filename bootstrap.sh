@@ -43,6 +43,7 @@ do
   su www-data -s /bin/bash -c "composer install"
   su www-data -s /bin/bash -c "npm install"
   su www-data -s /bin/bash -c "php artisan migrate"
+  cd ..
 done
 
 cp /vagrant/vagrant_files/default /etc/nginx/sites-available
