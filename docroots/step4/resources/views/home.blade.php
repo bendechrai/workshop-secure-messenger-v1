@@ -8,8 +8,8 @@
                 <div class="panel-heading">Contacts</div>
                 <div class="panel-body">
                     <ul>
-                        @foreach ($users as $user)
-                            <li><a href="{{ route('user', ['id'=>$user->id]) }}">{{ $user->name }}</a></li>
+                        @foreach ($users as $_user)
+                            <li><a href="{{ route('user', ['id'=>$_user->id]) }}">{{ $_user->name }}</a></li>
                         @endforeach
                     </ul>
                 </div>
