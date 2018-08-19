@@ -8,28 +8,30 @@
 require('./bootstrap');
 
 import AuthHash from './AuthHash';
-var ah = new AuthHash($);
-$(document).ready(function () {
-    ah.authHook();
-});
-
-// Try to get user
 import Encrypt from './Encrypt';
-$.ajax({
-    url: "/api/user",
-    type: "GET"
-}).done(function (user) {
+// make sure that the page is completely loaded before we try looking for the form elements
+$(document).ready(function () {
+    var ah = new AuthHash($);
+    ah.authHook();
 
-    // User is logged in - apply encryption to DOM
-    $(document).ready(function () {
-        var encrypt = new Encrypt($);
-        encrypt.getKeys({
-			userId: user.id,
-			passphrase: ah.getPassword()
-		}).done(function(keys){
-			console.log(keys);
-        });
-    });
+	// Try to get user
+	$.ajax({
+		url: "/api/user",
+		type: "GET"
+	}).done(function (user) {
+
+		// User is logged in - apply encryption to DOM
+		$(document).ready(function () {
+			var encrypt = new Encrypt($);
+			encrypt.getKeys({
+				userId: user.id,
+				passphrase: ah.getPassword()
+			}).done(function(keys){
+				console.log(keys);
+			});
+		});
+
+	});
 
 });
 
