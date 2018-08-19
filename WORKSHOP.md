@@ -647,4 +647,52 @@ And add the `sendHook()` method to `resources/assets/js/Encrypt.js`:
 
     }
 
+Now try sending a message. After you submit, you might notice the types message change, and the output in the message list will be a PGP message!
+
 ## Step 8 - Decrypting Messages
+
+Last step! You're encrypting messages now. Let's decrypt them when viewing now.
+
+After intiating the sendHook, we'll also decrypt messages in the DOM. Edit the `resources/assets/js/app.js` file again, and add this after the `sendHook` block:
+
+    encrypt.decryptMessages({
+        private_key: keys.private_key,
+        passphrase: ah.getPassword()
+    });
+
+And now let's decrypt any messages we find. Add this method to `resources/assets/js/Encrypt.js`:
+
+    async decryptMessages(params) {
+
+        self = this;
+
+        var privKeyObj = (await this.openpgp.key.readArmored(params.private_key)).keys[0];
+        await privKeyObj.decrypt(params.passphrase);
+
+        // Find all message bodies
+        this.jQuery("div.encrypt .messageBody").each(async function (i, el) {
+
+            // Extract message from DOM
+            var message = $(el).html().trim();
+
+            try {
+
+                // Decrypt
+                var options = {
+                    message: await self.openpgp.message.readArmored(message),
+                    privateKeys: privKeyObj
+                };
+
+                // Update DOM
+                self.openpgp.decrypt(options).then(function(decrypted){
+                    $(el).html(decrypted.data);
+                });
+            }
+            catch(error) {}
+
+        });
+
+    }
+
+Now refresh the page that was showing PGP messages, and they should magically decrypt!
+
