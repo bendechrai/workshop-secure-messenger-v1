@@ -4,30 +4,31 @@
 
 This document is the workshop guide for [Ben Dechrai](https://bendechrai.com)'s workshop of the same name.
 
-The workshop is split in to steps, to help break the tiem in to specific goals. If you don't manage to complete one step, you can simply move on to a working version and continue the workshop.
+The workshop is split in to steps, to help break them in to specific goals. If you don't manage to complete one step, you can simply move on to a working version and continue the workshop.
 
 For example, if you're working on step 3, and the group is ready to get started on step 4, simply change to the "step4" directory and use https://localhost:3004/ to get to a version thata has steps 1 to 3 already completed.
 
 ### Connecting to the virtual machine
 
-When working on the files, you can edit them directly on your host maching. However, there are some things that much be done from within the virtual machine. To avoid issues, it's recommended you always do things in the virtual machine.
+When working on the files, you can edit them directly on your host maching. However, there are some things that must be done from within the virtual machine. To avoid issues, it's recommended you always do things in the virtual machine.
 
-You can either connect to the machine from the VirtualMachine management application, or from your command line:
+You can either connect to the machine from the VirtualBox management application, or from your command line:
 
-    // From the base directory for the workshop, run this:
+    // From anywhere in the workshop code base, run this:
     vagrant ssh
 
 If you have used SSH, you should see a screen with text similar to this:
 
     Linux debian-9 4.9.0-6-amd64 #1 SMP Debian 4.9.88-1+deb9u1 (2018-05-07) x86_64
-    
+
     The programs included with the Debian GNU/Linux system are free software;
     the exact distribution terms for each program are described in the
     individual files in /usr/share/doc/*/copyright.
-    
+
     Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
     permitted by applicable law.
     vagrant@debian-9:~$
+
 If you connected via the VirtualBox application, you will see a black screen with the prompt:
 
     debian-9 login:
@@ -44,7 +45,7 @@ The code is in `/vagrant/docroots/stepX`, where X is the step number.
 
 ## Step 1 - Double Hashing
 
-By now, you should be able to see a base Laravel installation at `https://localhost:3001/`. Remember that we're using TLS encryption using a self-signed certificate, so if oyu see a certificate error, you'll need to manually proceed.
+By now, you should be able to see a base Laravel installation at `https://localhost:3001/`. Remember that we're using TLS encryption using a self-signed certificate, so if you see a certificate error, you'll need to manually proceed.
 
 The first step in this workshop is to enable the user login system, and make sure passwords are hashed in the browser before being sent to the server. This way, we can ensure the server will never know your password, but still be able to log you in.
 
@@ -61,14 +62,14 @@ If you refresh the homepage now, you'll see the Login and Register links in the 
 
 ### Hash passwords in the browser
 
-This will require some custom code. We're going to use JavaSolution to hook in to the login and registration form, and hash passwords before the form is actually submitted.
+This will require some custom code. We're going to use JavaScript to hook in to the login and registration form, and hash passwords before the form is actually submitted.
 
 The JavaScript in a Laravel application is kept in `resources/assets/js/app.js`. You can edit this file on your main machine if that's easier, using an editor of your choice.
 
 Add something like this to that file:
 
     import AuthHash from './AuthHash';
-        // make sure that the page is completely loaded before we try looking for the form elements
+    // make sure that the page is completely loaded before we try looking for the form elements
     $(document).ready(function () {
         var ah = new AuthHash($);
         ah.authHook();
@@ -90,62 +91,59 @@ You can hash a string like this:
 
 ### Sample Solution
 
+Feel free to just take this and put it straight in to your code. The aim of this workshop is to give you new tools and ways of thinking, not knowing the code off the top of your head.
+
+We want to hook in to two forms, so let's give those forms IDs we can look for:
+
+Edit `resources/views/auth/register.blade.php`, and add the ID `register` to the form element.
+
+Edit `resources/views/auth/login.blade.php`, and add the ID `login` to the form element.
+
+Then create the following AuthHash class in `resources/assets/js/AuthHash.js`:
+
     export default class AuthHash {
     
-      constructor(jQuery) {
-        this.jQuery = jQuery;
-      }
+        constructor(jQuery) {
+            this.jQuery = jQuery;
+            this.bcrypt = require("bcryptjs");
+        }
     
-      authHook() {
+        authHook() {
     
-        self = this;
+            self = this;
     
-        // On register submit, hash passwords
-        this.jQuery("form#register").submit(function (e) {
+            // On register submit, hash passwords
+            this.jQuery("form#register").submit(function (e) {
     
-          // Grab passwords, save to session storage, then blank the input fields
-          var password = self.jQuery("#password", e.target).val();
-          var passwordConfirm = self.jQuery("#password-confirm", e.target).val();
-          sessionStorage.setItem("password", password);
-          self.jQuery("#password", e.target).val("");
-          self.jQuery("#password-confirm", e.target).val("");
+                // Grab passwords
+                var password = self.jQuery("#password", e.target).val();
+                var passwordConfirm = self.jQuery("#password-confirm", e.target).val();
     
+                // Hash the passwords, and put them in to the password fields
+                self.jQuery("#password", e.target).val(self.bcrypt.hashSync(password, self.getSalt()));
+                self.jQuery("#password-confirm", e.target).val(self.bcrypt.hashSync(passwordConfirm, self.getSalt()));
     
-          // Hash the password, and put it in to the password fields
-          var bcrypt = require("bcryptjs");
-          self.jQuery("#password", e.target).val(bcrypt.hashSync(password, self.getSalt()));
-          self.jQuery("#password-confirm", e.target).val(bcrypt.hashSync(passwordConfirm, self.getSalt()));
+            });
     
-        });
+            // On login submit, hash password
+            this.jQuery("form#login").submit(function (e) {
     
-        // On login submit, hash password
-        this.jQuery("form#login").submit(function (e) {
+                // Grab password
+                var password = self.jQuery("#password", e.target).val();
     
-          // Grab password, save to session storage, then blank the input field
-          var password = self.jQuery("#password", e.target).val();
-          sessionStorage.setItem("password", password);
-          self.jQuery("#password", e.target).val("");
+                // Hash the password, and put it in to the password field
+                self.jQuery("#password", e.target).val(self.bcrypt.hashSync(password, self.getSalt()));
     
-          // Hash the password, and put it in to the password field
-          var bcrypt = require("bcryptjs");
-          var hashPassword = bcrypt.hashSync(password, self.getSalt());
-          self.jQuery("#password", e.target).val(hashPassword);
+            });
     
-        });
+        }
     
-        // On logout, forget password
-        this.jQuery("#logout-form").submit(function (e) {
-          sessionStorage.removeItem("password");
-        });
-    
-      }
-    
-      getSalt() {
-        // Salt is 22 chars long. It shouldn't be public. Can you think of a way to avoid using a fixed string?
-        var salt = "1234567890123456789012"
-        salt = "$2y$10$" + salt;
-        return salt;
-      }
+        getSalt() {
+            // Salt is 22 chars long. It shouldn't be public. Can you think of a way to avoid using a fixed string?
+            var salt = "1234567890123456789012"
+            salt = "$2y$10$" + salt;
+            return salt;
+        }
     
     }
 
