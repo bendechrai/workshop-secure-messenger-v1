@@ -13,6 +13,7 @@ Vagrant.configure(2) do |config|
   config.vm.network "forwarded_port", guest: 3006, host: 3006, auto_correct: true
   config.vm.network "forwarded_port", guest: 3007, host: 3007, auto_correct: true
   config.vm.network "forwarded_port", guest: 3008, host: 3008, auto_correct: true
+  config.vm.network "forwarded_port", guest: 3009, host: 3009, auto_correct: true
   config.vm.provision :shell, path: "bootstrap.sh"
   config.vm.synced_folder ".", "/vagrant",
     type: "virtualbox",

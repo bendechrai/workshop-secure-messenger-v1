@@ -22,6 +22,7 @@ mysqladmin create step5
 mysqladmin create step6
 mysqladmin create step7
 mysqladmin create step8
+mysqladmin create final
 
 # Install Composer, and make sure www-data can cache composer files
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
@@ -36,7 +37,7 @@ sudo apt-get install -y nodejs build-essential
 
 # Run installers for each docroot
 cd /vagrant/docroots
-for step in step*
+for step in step* final
 do
   cd $step
   su www-data -s /bin/bash -c "composer install"
