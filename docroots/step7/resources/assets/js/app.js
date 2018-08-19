@@ -27,7 +27,18 @@ $.ajax({
 			userId: user.id,
 			passphrase: ah.getPassword()
 		}).done(function(keys){
-			console.log(keys);
+
+            // If there's a div with 'encrypt' class
+            if($('div.encrypt')) {
+
+                // Find the other user in the conversation
+                var otherId = parseInt($($('div.encrypt')[0]).attr('class').match(/\bencrypt-user-([0-9+])\b/)[1]);
+                encrypt.getKeys({ userId: otherId }).done(function(otherKeys) {
+                    console.log(otherKeys);
+                });
+
+            }
+ 
         });
     });
 

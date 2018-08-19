@@ -577,5 +577,35 @@ So let's create that Encrypt class in `resources/assets/js/Encrypt.js`. This one
 So what's going on here? Essentially, the `getKeys()` method will grab the keys from the API, and return them. If the API doesn't have keys yet though, it calls `generateKeys()` with the user's password to create a public/private keypair from scratch. When `generateKeys()` returns the keypair, the `getKeys()` method will send them to the API, and then return them to the main application again.
 
 ## Step 6 - Retrieving Others' Public Keys
+
+We're on the home-run! The messaging is working, the public/private keypairs are available to all new users. Just take a second to make sure you've logged in as every user again, so that each use has a keypair in the database.
+
+Now, we'll want to load another user's public key whenever we're looking at a chat with them in it. Let's denote this by adding an ID to the DOM. Editing `resources/views/user.blade.php`, find the code where we pring out he "Message" heading. The line before, is the panel div - probably around line 19. Change it ot this:
+
+    <div class="panel panel-default encrypt encrypt-user-{{$user->id}}">
+
+This gives us something to look for in the frontend app, as well as the ID of the other user.
+
+### Loading the keys
+
+In `resources/assets/js/app.js`, where we're currently logging the logged in user's key to the console, we'll now find any `encrypt` class elements in the DOM, and make sure we've got both users' keys. In place of:
+
+    console.log(keys);
+
+Put this:
+
+    // If there's a div with 'encrypt' class
+    if($('div.encrypt')) {
+
+        // Find the other user in the conversation
+        var otherId = parseInt($($('div.encrypt')[0]).attr('class').match(/\bencrypt-user-([0-9+])\b/)[1]);
+        encrypt.getKeys({ userId: otherId }).done(function(otherKeys) {
+            console.log(otherKeys);
+        });
+
+    }
+
+Now, if you refresh a message view page, instead of the logged in user's public and private key, you'll see the log show the other user's public key only (we shouldn't get hte private key for another person!).
+
 ## Step 7 - Encrypting Messages
 ## Step 8 - Decrypting Messages

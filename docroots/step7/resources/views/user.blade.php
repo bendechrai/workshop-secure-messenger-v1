@@ -16,7 +16,7 @@
             </div>
         </div>
         <div class="col-md-8 messages">
-            <div class="panel panel-default">
+            <div class="panel panel-default encrypt encrypt-user-{{$user->id}}">
                 <div class="panel-heading">Message</div>
                 <div class="panel-body">
                     @foreach($messages as $_message)
