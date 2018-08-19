@@ -27,7 +27,7 @@
                     <form action="{{ route('user.message', ['id'=>$user->id]) }}" method="post">
                         {{csrf_field()}}
                         <div class="input-group">
-                            <input name="message" type="text" class="form-control" placeholder="Type new message to {{ $user->name }}...">
+                            <input id="message" name="message" type="text" class="form-control" placeholder="Type new message to {{ $user->name }}...">
                             <span class="input-group-btn">
                                 <button class="btn btn-default" type="submit">Send!</button>
                             </span>
