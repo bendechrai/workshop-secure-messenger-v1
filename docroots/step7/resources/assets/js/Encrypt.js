@@ -34,7 +34,7 @@ export default class Encrypt {
 
 				});
             } else {
-				deferred.resolve(self.key);
+				deferred.resolve(keys);
 			}
 
         });

@@ -543,7 +543,7 @@ So let's create that Encrypt class in `resources/assets/js/Encrypt.js`. This one
             
                     });
                 } else {
-                    deferred.resolve(self.keys);
+                    deferred.resolve(keys);
                 }
               
             });
