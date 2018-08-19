@@ -8,10 +8,12 @@
 require('./bootstrap');
 
 import AuthHash from './AuthHash';
+// make sure that the page is completely loaded before we try looking for the form elements
 $(document).ready(function () {
     var ah = new AuthHash($);
     ah.authHook();
 });
+
 
 window.Vue = require('vue');
 

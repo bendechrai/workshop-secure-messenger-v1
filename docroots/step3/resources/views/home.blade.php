@@ -7,9 +7,11 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Contacts</div>
                 <div class="panel-body">
-                @foreach ($users as $user)
-                    <a href="">{{ $user->name }}</a>
-                @endforeach
+                    <ul>
+                        @foreach ($users as $_user)
+                            <li><a href="">{{ $_user->name }}</a></li>
+                        @endforeach
+                    </ul>
                 </div>
             </div>
         </div>
