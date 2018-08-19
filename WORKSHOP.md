@@ -174,11 +174,11 @@ Edit the `resources/views/home.blade.php` view, and `app/Http/Controllers/HomeCo
                 <div class="panel panel-default">
                     <div class="panel-heading">Contacts</div>
                     <div class="panel-body">
-                                                <ul>
-                                                        @foreach ($users as $_user)
-                                                                <li><a href="">{{ $_user->name }}</a></li>
-                                                        @endforeach
-                                                </ul>
+                        <ul>
+                            @foreach ($users as $_user)
+                                <li><a href="">{{ $_user->name }}</a></li>
+                            @endforeach
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -204,7 +204,7 @@ And replace the `index` method with:
 
     public function index()
     {
-          $users = User::all();
+        $users = User::all();
         return view('home', ['users' => $users]);
     }
 
