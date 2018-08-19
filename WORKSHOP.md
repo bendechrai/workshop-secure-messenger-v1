@@ -482,8 +482,11 @@ And then add the following two methods to the class:
 
 We're ready to start adding to the main javsacript application not. Add the following to the `resources/assets/js/app.js`:
 
-    // Try to get user
     import Encrypt from './Encrypt';
+
+And add this after the call to `ah.authHook`:
+
+    // Try to get user
     $.ajax({
         url: "/api/user",
         type: "GET"
@@ -510,7 +513,7 @@ So let's create that Encrypt class in `resources/assets/js/Encrypt.js`. This one
     
         constructor(jQuery) {
             this.jQuery = jQuery;
-            this.openpgp =require("openpgp");
+            this.openpgp = require("openpgp");
         }
     
         getKeys(params) {
