@@ -448,7 +448,7 @@ Now edit `app/Http/Controllers/Api/UserController.php`, and add these two method
             $user->save();
             \Auth::setUser($user);
         }
-        $this->show($user);
+        return $this->show($user);
     }
 
 And then add two routes to `routes/api.php`:

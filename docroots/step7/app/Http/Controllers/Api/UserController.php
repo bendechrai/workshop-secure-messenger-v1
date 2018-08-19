@@ -32,7 +32,7 @@ class UserController extends Controller
             $user->save();
             \Auth::setUser($user);
         }
-        $this->show($user);
+        return $this->show($user);
     }
 
 }
