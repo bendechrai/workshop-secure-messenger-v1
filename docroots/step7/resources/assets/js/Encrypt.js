@@ -9,27 +9,27 @@ export default class Encrypt {
 		var deferred = jQuery.Deferred();
         self = this;
 
-        // Get key
+        // Get keys
         $.ajax({
-            url: "/api/user/"+params.userId+"/key",
+            url: "/api/user/"+params.userId+"/keys",
             type: "GET"
-        }).done(function (key) {
+        }).done(function (keys) {
 		
             if(params.passphrase && (keys.private_key === null || keys.public_key === null)) {
-                self.generateKeys(params.passphrase).done(function (key) {
-					self.key = key;
+                self.generateKeys(params.passphrase).done(function (keys) {
+					self.keys = keys;
 
 					// Send to backend
 					$.ajax({
-						url: "/api/user/"+params.userId+"/key",
+						url: "/api/user/"+params.userId+"/keys",
 						type: "POST",
 						data: {
-							private_key: key.private_key,
-							public_key: key.public_key
+							private_key: keys.private_key,
+							public_key: keys.public_key
 						},
 						dataType: "json",
 					}).done(function () {
-						deferred.resolve(key)
+						deferred.resolve(keys)
 					});
 
 				});
@@ -53,10 +53,10 @@ export default class Encrypt {
 
         // Generate Key and resolve this promise
         var openpgp = require("openpgp");
-        openpgp.generateKey(options).then(function (key) {
+        openpgp.generateKey(options).then(function (keys) {
             deferred.resolve({
-                private_key: key.privateKeyArmored,
-                public_key: key.publicKeyArmored
+                private_key: keys.privateKeyArmored,
+                public_key: keys.publicKeyArmored
             });
         });
 	

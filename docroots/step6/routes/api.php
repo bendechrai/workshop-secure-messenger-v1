@@ -16,6 +16,6 @@ Route::middleware('auth')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware('auth')->get('/user/{user}/key', 'Api\UserController@show');
-Route::middleware('auth')->post('/user/{user}/key', 'Api\UserController@update');
+Route::middleware('auth')->get('/user/{user}/keys', 'Api\UserController@show');
+Route::middleware('auth')->post('/user/{user}/keys', 'Api\UserController@update');
 
