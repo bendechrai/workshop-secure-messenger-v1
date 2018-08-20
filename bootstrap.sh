@@ -40,8 +40,10 @@ cd /vagrant/docroots
 for step in step* final
 do
   cd $step
+  su www-data -s /bin/bash -c "cp .env.example .env"
   su www-data -s /bin/bash -c "composer install"
   su www-data -s /bin/bash -c "npm install"
+  su www-data -s /bin/bash -c "php artisan key:generate"
   su www-data -s /bin/bash -c "php artisan migrate"
   cd ..
 done
