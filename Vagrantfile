@@ -1,7 +1,7 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-Vagrant::DEFAULT_SERVER_URL.replace('https://vagrantcloud.com')
+# Vagrant::DEFAULT_SERVER_URL.replace('https://vagrantcloud.com')
 
 Vagrant.configure(2) do |config|
   config.vm.box = "bento/debian-9.4"
