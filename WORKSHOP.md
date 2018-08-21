@@ -6,11 +6,11 @@ This document is the workshop guide for [Ben Dechrai](https://bendechrai.com)'s 
 
 The workshop is split in to steps, to help break them in to specific goals. If you don't manage to complete one step, you can simply move on to a working version and continue the workshop.
 
-For example, if you're working on step 3, and the group is ready to get started on step 4, simply change to the "step4" directory and use https://localhost:3004/ to get to a version thata has steps 1 to 3 already completed.
+For example, if you're working on step 3, and the group is ready to get started on step 4, simply change to the "step4" directory and use https://localhost:3004/ to get to a version that has steps 1 to 3 already completed.
 
 ### Connecting to the virtual machine
 
-When working on the files, you can edit them directly on your host maching. However, there are some things that must be done from within the virtual machine. To avoid issues, it's recommended you always do things in the virtual machine.
+When working on the files, you can edit them directly on your host machine. However, there are some things that must be done from within the virtual machine. To avoid issues, it's recommended you always do things in the virtual machine.
 
 You can either connect to the machine from the VirtualBox management application, or from your command line:
 
@@ -378,11 +378,11 @@ Let's start by grabbing the OpenPGP.js library:
 
 The first time a user logs in, or creates an account, we now need to create a keypair, and store them securely.
 
-To start with, we need a passphrase for the keypair. You'll remeber that we hash the passwords before they're sent to the server. The reason for this is so we can use the same password for the keypair, as they've never left the browser session.
+To start with, we need a passphrase for the keypair. You'll remember that we hash the passwords before they're sent to the server. The reason for this is so we can use the same password for the keypair, as they've never left the browser session.
 
-So to complete this step, we need to detect if a user is logged in, and if they are, get the keypair. If there's no keypair, generate themm and store them on the server.
+So to complete this step, we need to detect if a user is logged in, and if they are, get the keypair. If there's no keypair, generate them and store them on the server.
 
-**But wait!** We're storing the provate key on the server? Yes, we are, but it is protected with the passphrase. Not perfect, but good enough for the purposes of this workshop.
+**But wait!** We're storing the private key on the server? Yes, we are, but it is protected with the passphrase. Not perfect, but good enough for the purposes of this workshop.
 
 #### Update the Database
 
@@ -413,7 +413,7 @@ You can now head to `https://localhost:XXXX/api/user` and see a JSON representat
 
 #### Keypairs
 
-You'll notice the keys are returned. Now, we don't want the private key to be shared unless it's being requested for the logged in user. For simplicy, we'll just hide them both and create a new endpoint. You could conditionally hide the private key for some users, and if you know how to, or want to later, go ahead. The rest of the code in this workshop assumed the new endpoints though.
+You'll notice the keys are returned. Now, we don't want the private key to be shared unless it's being requested for the logged in user. For simplicity, we'll just hide them both and create a new endpoint. You could conditionally hide the private key for some users, and if you know how to, or want to later, go ahead. The rest of the code in this workshop assumed the new endpoints though.
 
 Edit `app/User.php`, and add `private_key` and `public_key` to the `$hidden` array.
 
@@ -480,7 +480,7 @@ And then add the following two methods to the class:
 
 #### Make sure we have a keypair
 
-We're ready to start adding to the main javsacript application not. Add the following to the `resources/assets/js/app.js`:
+We're ready to start adding to the main javascript application not. Add the following to the `resources/assets/js/app.js`:
 
     import Encrypt from './Encrypt';
 
@@ -607,7 +607,7 @@ Put this:
 
     }
 
-Now, if you refresh a message view page, instead of the logged in user's public and private key, you'll see the log show the other user's public key only (we shouldn't get hte private key for another person!).
+Now, if you refresh a message view page, instead of the logged in user's public and private key, you'll see the log show the other user's public key only (we shouldn't get the private key for another person!).
 
 ## Step 7 - Encrypting Messages
 
@@ -658,7 +658,7 @@ Now try sending a message. After you submit, you might notice the types message 
 
 Last step! You're encrypting messages now. Let's decrypt them when viewing now.
 
-After intiating the sendHook, we'll also decrypt messages in the DOM. Edit the `resources/assets/js/app.js` file again, and add this after the `sendHook` block:
+After initiating the sendHook, we'll also decrypt messages in the DOM. Edit the `resources/assets/js/app.js` file again, and add this after the `sendHook` block:
 
     encrypt.decryptMessages({
         private_key: keys.private_key,
