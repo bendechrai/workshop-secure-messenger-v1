@@ -24,6 +24,9 @@ Ensure you have the latest versions of VirtualBox and Vagrant installed. This wo
 
 If you haven't yet, clone `https://github.com/bendechrai/workshop-secure-messenger.git` using your favourite git client.
 
+```bash
+git clone --depth 1 https://github.com/bendechrai/workshop-secure-messenger.git
+
 ### Virtual Machine
 
 This code repository contains a working Vagrant box, for ease of getting started. Once you've cloned the repository, head to your command line terminal, and run:
