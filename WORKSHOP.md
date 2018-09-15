@@ -8,7 +8,39 @@ The workshop is split in to steps, to help break them in to specific goals. If y
 
 For example, if you're working on step 3, and the group is ready to get started on step 4, simply change to the "step4" directory and use https://localhost:3004/ to get to a version that has steps 1 to 3 already completed.
 
+## Pre-requisites
+
+To take part in this workshop, you need to be comfortable using the command line terminal of your operating system, be able to clone a git repository, and have a basic understanding of PHP.
+
+## Before the Workshop
+
+Before you arrive at the workshop, you'll need to get your laptop prepared. This process can take a few hours or more, depending on your internet connection speed.
+
+### Software Requirements
+
+Ensure you have the latest versions of VirtualBox and Vagrant installed. This workshop is known to work with VirtualBox 5.1.34 and Vagrant 1.9.1 as a basis for sandboxed development.
+
+### Cloning this Repository
+
+If you haven't yet, clone `https://github.com/bendechrai/workshop-secure-messenger.git` using your favourite git client.
+
+### Virtual Machine
+
+This code repository contains a working Vagrant box, for ease of getting started. Once you've cloned the repository, head to your command line terminal, and run:
+
+```bash
+cd <path/to/workshop-secure-messenger>
+vagrant box add workshop-secure-messenger.box --name workshop-secure-messenger
+vagrant up
+```
+
+## At the Workshop
+
 ### Connecting to the virtual machine
+
+**Username**: vagrant
+
+**Password**: vagrant
 
 When working on the files, you can edit them directly on your host machine. However, there are some things that must be done from within the virtual machine. To avoid issues, it's recommended you always do things in the virtual machine.
 
@@ -38,8 +70,6 @@ If you connected via the VirtualBox application, you will see a black screen wit
 ```bash
 debian-9 login:
 ```
-
-Use the username `vagrant` and password `vagrant` to get in.
 
 ### File location in the virtual machine
 
@@ -91,7 +121,7 @@ Now create the `AuthHash` class (`resources/assets/js/Authash.js`) and the `auth
 
 ### Hints
 
-You might want to add `id`s to the forms in `resources/views/auth/*.blade.php`
+You might want to add `id`s to the HTML form elements in `resources/views/auth/*.blade.php`
 
 JavaScript doesn't have any native hashing functions. An easy to use library is easy to install with `npm` from the document root:
 
@@ -290,7 +320,7 @@ Schema::table('messages', function($table) {
 
 ### Create a User View and Controller
 
-We have a model and controller for Messages, but not for the user.
+We have a model and controller for Messages, but not for the user. Make sure you're in the main document root again, for the step you're working in, and run:
 
 ```bash
 php artisan make:controller UserController
@@ -304,8 +334,6 @@ use App\Message;
 ```
 
 Add the `show()` method:
-
-And the view, which is a new file in `resources/views/user.blade.php`:
 
 ```php
 public function show(User $user)
@@ -325,6 +353,8 @@ public function show(User $user)
     return view('user', ['user' => $user, 'users' => $users, 'messages' => $messages]);
 }
 ```
+
+And for the view, you'll need to create a new file in `resources/views/user.blade.php`:
 
 ```php
 @extends('layouts.app')
