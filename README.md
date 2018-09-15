@@ -26,6 +26,7 @@ If you haven't yet, clone `https://github.com/bendechrai/workshop-secure-messeng
 
 ```bash
 git clone --depth 1 https://github.com/bendechrai/workshop-secure-messenger.git
+```
 
 ### Virtual Machine
 
