@@ -8,13 +8,15 @@ The workshop is split in to steps, to help break them in to specific goals. If y
 
 For example, if you're working on step 3, and the group is ready to get started on step 4, simply change to the "step4" directory and use https://localhost:3004/ to get to a version that has steps 1 to 3 already completed.
 
+---
+
 ## Pre-requisites
 
 To take part in this workshop, you need to be comfortable using the command line terminal of your operating system, be able to clone a git repository, and have a basic understanding of PHP.
 
-## Before the Workshop
+### <span style="background-color: #FFFF00">Before the Workshop</span>
 
-Before you arrive at the workshop, you'll need to get your laptop prepared. This process can take a few hours or more, depending on your internet connection speed.
+<span style="background-color: #FFFF00">Before you arrive at the workshop, ***you'll need to get your laptop prepared***. This process can take a few hours or more, depending on your internet connection speed.</span>
 
 ### Software Requirements
 
@@ -45,6 +47,8 @@ cd <path/to/workshop-secure-messenger>
 vagrant box add workshop-secure-messenger.box --name workshop-secure-messenger
 vagrant up
 ```
+
+---
 
 ## At the Workshop
 
@@ -108,6 +112,8 @@ One way to ensure you don't have this issue, is to enable the developer tools in
 
 ![disable-cache](docs/images/disable-cache.png)
 
+---
+
 ## Steps
 
 To help keep participants on track, the workshop can be run from beginning to end in one step. Participants who need more time may elect to move on to a known working version of a subsequent step during the workshop, and revisit the details of each step in their own time at a later time.
@@ -123,6 +129,8 @@ These steps we'll follow in the workshop are:
 6. Create an endpoint to allow a user to get a contact's public key,
 7. Encrypt the message before sending it to the server,
 8. Decrypt encrypted messages,
+
+---
 
 ## Step 1 - Double Hashing
 
@@ -250,6 +258,8 @@ after changign any JS files. Alternatilvely, run this once in another tab, and c
 npm run watch
 ```
 
+---
+
 ## Step 2 - Contact Lists
 
 Starting logged in, and looking at the dashboard, we want to create a view of contacts on the left, and a placeholder for messages on the right. For simplicity, the contact list will show a list of all users in the system. Note that this could represent a privacy leak in a production system.
@@ -310,6 +320,8 @@ public function index()
 ```
 
 If you have time, why not try to make sure users are in alphabetical order, and exclude the logged in user from the list.
+
+---
 
 ## Step 3 - Messages
 
@@ -440,6 +452,8 @@ Finally, add a route to `routes/web.php` to handle the new URL:
 Route::get('/{user}', 'UserController@show')->name('user');
 ```
 
+---
+
 ## Step 4 - Allow Sending of Messages
 
 Let's add a form to the user view. After the `panel-body` that contains the list of messages, add a `panel-footer`:
@@ -492,6 +506,8 @@ And then simply update the view to show:
 ```
 
 in the relevant spot.
+
+---
 
 ## Step 5 - Encryption Keys
 
@@ -729,6 +745,8 @@ export default class Encrypt {
 
 So what's going on here? Essentially, the `getKeys()` method will grab the keys from the API, and return them. If the API doesn't have keys yet though, it calls `generateKeys()` with the user's password to create a public/private keypair from scratch. When `generateKeys()` returns the keypair, the `getKeys()` method will send them to the API, and then return them to the main application again.
 
+---
+
 ## Step 6 - Retrieving Others' Public Keys
 
 We're on the home-run! The messaging is working, the public/private keypairs are available to all new users. Just take a second to make sure you've logged in as every user again, so that each use has a keypair in the database.
@@ -765,6 +783,8 @@ if($('div.encrypt')) {
 ```
 
 Now, if you refresh a message view page, instead of the logged in user's public and private key, you'll see the log show the other user's public key only (we shouldn't get the private key for another person!).
+
+---
 
 ## Step 7 - Encrypting Messages
 
@@ -816,6 +836,8 @@ sendHook(keys) {
 ```
 
 Now try sending a message. After you submit, you might notice the types message change, and the output in the message list will be a PGP message!
+
+---
 
 ## Step 8 - Decrypting Messages
 
