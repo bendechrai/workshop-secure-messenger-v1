@@ -83,15 +83,22 @@ If you connected via the VirtualBox application, you will see a black screen wit
 debian-9 login:
 ```
 
-### File location in the virtual machine
 
-Whenever you want to work on the workshop files, you'll have to change user to the web server first:
+### URLs and document roots for each step
+
+Whenever you want to work on the workshop files within the Vagrant box, you'll have to change user to the web server first:
 
 ```bash
 sudo su - www-data
 ```
 
-The code is in `/vagrant/docroots/stepX`, where X is the step number.
+Each of these steps is a starting milestone in this repo, and available at `https://localhost:xxxx/` where `xxxx` is the step number plus 3000. For example, if starting from step 3, participants can head to `https://localhost:3003/`.
+
+Similarly, each step has it's own known-good document root, in the `/vagrant/docroots/stepX` folder, where `X` is the step number.
+
+If you're looking for the document root on your host machine, they're in `/path/to/workshop-secure-messenger/docroots/stepX`.
+
+The final, working code, is in `docroots/final`.
 
 ### Caching Issues
 
@@ -116,12 +123,6 @@ These steps we'll follow in the workshop are:
 6. Create an endpoint to allow a user to get a contact's public key,
 7. Encrypt the message before sending it to the server,
 8. Decrypt encrypted messages,
-
-## URLs and document roots for each step
-
-Each of these steps is a starting milestone in this repo, and available at `https://localhost:xxxx/` where `xxxx` is the step number plus 3000. For example, if starting from step 3, participants can head to `https://localhost:3003/`.
-
-Similarly, each step has it's own known-good document root, in the `docroots/stepx` folder, where `x` is the step number.
 
 ## Step 1 - Double Hashing
 
