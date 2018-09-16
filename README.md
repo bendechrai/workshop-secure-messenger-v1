@@ -22,7 +22,7 @@ The workshop code is known to work in [Chromium](https://www.chromium.org/) and 
 
 ### Cloning this Repository
 
-If you haven't yet, clone `https://github.com/bendechrai/workshop-secure-messenger.git` using your favourite git client.
+If you haven't yet, clone [`https://github.com/bendechrai/workshop-secure-messenger.git`](https://github.com/bendechrai/workshop-secure-messenger.git) using your favourite git client.
 
 ```bash
 git clone --depth 1 https://github.com/bendechrai/workshop-secure-messenger.git
