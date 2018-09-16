@@ -93,6 +93,14 @@ sudo su - www-data
 
 The code is in `/vagrant/docroots/stepX`, where X is the step number.
 
+### Caching Issues
+
+A lot of the code in this workshop is client-side JavaScript. As such, you might encounter cases where changes to to code don't seem to create the desired effect.
+
+One way to ensure you don't have this issue, is to enable the developer tools in Chromium or Chrome, and select the Network tab, and turn on the "Disable Cache" option.
+
+![disable-cache](docs/images/disable-cache.png)
+
 ## Steps
 
 To help keep participants on track, the workshop can be run from beginning to end in one step. Participants who need more time may elect to move on to a known working version of a subsequent step during the workshop, and revisit the details of each step in their own time at a later time.
