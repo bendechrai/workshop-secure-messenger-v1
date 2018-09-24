@@ -87,8 +87,7 @@ If you connected via the VirtualBox application, you will see a black screen wit
 debian-9 login:
 ```
 
-
-### URLs and document roots for each step
+### Running commands as the web server
 
 Whenever you want to work on the workshop files within the Vagrant box, you'll have to change user to the web server first:
 
@@ -96,9 +95,22 @@ Whenever you want to work on the workshop files within the Vagrant box, you'll h
 sudo su - www-data
 ```
 
-Each of these steps is a starting milestone in this repo, and available at `https://localhost:xxxx/` where `xxxx` is the step number plus 3000. For example, if starting from step 3, participants can head to `https://localhost:3003/`.
+### Building each document root
 
-Similarly, each step has it's own known-good document root, in the `/vagrant/docroots/stepX` folder, where `X` is the step number.
+There are a number of document roots, each being a starting milestone in this repo, to match the accompanying step in this guide. Each step has it's own known-good document root, in the `/vagrant/docroots/stepX` folder, where `X` is the step number.
+
+Before you can run the code in any of the document roots, you will need to do some configurations from the command line:
+
+```bash
+cd /vagrant/docroots/step<X>
+cp .env.example .env
+composer install
+npm install
+php artisan key:generate
+php artisan migrate
+```
+
+Once this is done, the step will be available at `https://localhost:xxxx/` where `xxxx` is the step number plus 3000. For example, if starting from step 3, the site will be available at [`https://localhost:3003/`](https://localhost:3003/).
 
 If you're looking for the document root on your host machine, they're in `/path/to/workshop-secure-messenger/docroots/stepX`.
 
