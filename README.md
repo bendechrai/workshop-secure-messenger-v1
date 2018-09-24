@@ -35,7 +35,7 @@ git clone --depth 1 https://github.com/bendechrai/workshop-secure-messenger.git
 Grab the Vagrant box image from [https://www.dropbox.com/s/10e5d70t7i52jhl/workshop-secure-messenger.box?dl=1](https://www.dropbox.com/s/10e5d70t7i52jhl/workshop-secure-messenger.box?dl=1) and save it in the root of the new git repository.
 
 ```bash
-wget https://www.dropbox.com/s/10e5d70t7i52jhl/workshop-secure-messenger.box?dl=0
+curl -OL https://www.dropbox.com/s/dl/10e5d70t7i52jhl/workshop-secure-messenger.box
 ```
 
 ### Virtual Machine
