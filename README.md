@@ -20,7 +20,7 @@ To take part in this workshop, you need to be comfortable using the command line
 
 ### Software Requirements
 
-The workshop code is known to work in [Chromium](https://www.chromium.org/) and [Chrome](https://www.google.com.au/chrome/), and the sandbox development environment uses [VirtualBox](https://www.virtualbox.org/) and [Vagrant](https://www.vagrantup.com/). Please ensure you have one of these browsers installed, and at least VirtualBox 5.1.34 and Vagrant 1.9.1 runnig and working on your machine.
+The workshop code is known to work in [Chromium](https://www.chromium.org/) and [Chrome](https://www.google.com.au/chrome/), and the sandbox development environment uses [VirtualBox](https://www.virtualbox.org/) and [Vagrant](https://www.vagrantup.com/). Please ensure you have one of these browsers installed, and at least VirtualBox 5.1.34 and Vagrant 1.9.1 running and working on your machine.
 
 ### Cloning this Repository
 
